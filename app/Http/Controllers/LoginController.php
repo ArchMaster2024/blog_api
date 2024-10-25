@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\AuthenticatePostRequest;
 use App\Http\Requests\Auth\RegisterPostRequest;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
@@ -11,14 +12,14 @@ class LoginController extends Controller
 {
     public function authenticate(AuthenticatePostRequest $request)
     {
-        if (Auth::attempt($request)) {
+        $credentials = $request->validated();
+        if (Auth::attempt($credentials)) {
             $userId = Auth::id();
-            $userData = User::find($userId);
-            $token = $userData->createToken($request->token_name);
+            $user = User::find($userId);
+            $token = $user->createToken($user->name);
             $authUser = [
-                'name' => $userData->name,
-                'email' => $userData->email,
-                'password' => $userData->password,
+                'name' => $user->name,
+                'email' => $user->email,
                 'token' => $token,
                 'tokenType' => 'Bearer',
             ];
@@ -38,7 +39,8 @@ class LoginController extends Controller
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = $request->password;
+        $password = Hash::make($request->password);
+        $user->password = $password;
         if ($user->save()) {
             $response = [
                 'title' => 'User registered correctly',

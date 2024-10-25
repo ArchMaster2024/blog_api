@@ -3,20 +3,21 @@
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 interface IBasicRepository
 {
     /**
      * Method for get all models from the database
      */
-    public function getAll(): Model;
+    public function getAll(): Collection;
 
     /**
      * Method for get one model by id from database
      *
      * @param int $id
      */
-    public function getOneById(int $id): Model;
+    public function getOneById(int $id): Model|null;
 
     /**
      * Method for create model
@@ -38,5 +39,5 @@ interface IBasicRepository
      *
      * @param int $id
      */
-    public function delete(int $id): bool|null;
+    public function delete(int $id): int;
 }

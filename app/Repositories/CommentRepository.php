@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Repositories\IBasicRepository;
+use Illuminate\Database\Eloquent\Collection;
 use App\Models\Comment;
 
 class CommentRepository implements IBasicRepository
@@ -10,9 +11,9 @@ class CommentRepository implements IBasicRepository
     /**
      * Method for get all models from the database
      *
-     * @return Comment
+     * @return Collection
      */
-    public function getAll(): Comment
+    public function getAll(): Collection
     {
         return Comment::all();
     }
@@ -21,9 +22,9 @@ class CommentRepository implements IBasicRepository
      * Method for get all models from the database
      *
      * @param int $id
-     * @return Comment
+     * @return Comment|null
      */
-    public function getOneById(int $id): Comment
+    public function getOneById(int $id): Comment|null
     {
         return Comment::find($id);
     }
@@ -32,9 +33,9 @@ class CommentRepository implements IBasicRepository
      * Method for create Comment
      *
      * @param array $model
-     * @return bool
+     * @return Comment
      */
-    public function create(array $model): bool
+    public function create(array $model): Comment
     {
         return Comment::create($model);
     }
@@ -55,10 +56,10 @@ class CommentRepository implements IBasicRepository
      * Method for delete Comment
      *
      * @param int $id
-     * @return bool|null
+     * @return int
      */
-    public function delete(int $id): bool|null
+    public function delete(int $id): int
     {
-        return Comment::where('id', $id)->delete();
+        return Comment::destroy($id);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Repositories\IBasicRepository;
+use Illuminate\Database\Eloquent\Collection;
 use App\Models\Post;
 
 class PostRespository implements IBasicRepository
@@ -10,9 +11,9 @@ class PostRespository implements IBasicRepository
     /**
      * Method for get all models from the database
      *
-     * @return Post
+     * @return Collection
      */
-    public function getAll(): Post
+    public function getAll(): Collection
     {
         return Post::all();
     }
@@ -21,9 +22,9 @@ class PostRespository implements IBasicRepository
      * Method for get all models from the database
      *
      * @param int $id
-     * @return Post
+     * @return Post|null
      */
-    public function getOneById(int $id): Post
+    public function getOneById(int $id): Post|null
     {
         return Post::find($id);
     }
@@ -32,7 +33,7 @@ class PostRespository implements IBasicRepository
      * Method for create post
      *
      * @param array $model
-     * @return bool
+     * @return Post
      */
     public function create(array $model): Post
     {
@@ -55,10 +56,10 @@ class PostRespository implements IBasicRepository
      * Method for delete post
      *
      * @param int $id
-     * @return bool|null
+     * @return int
      */
-    public function delete(int $id): bool|null
+    public function delete(int $id): int
     {
-        return Post::where('id', $id)->delete();
+        return Post::destroy($id);
     }
 }
